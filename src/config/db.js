@@ -17,7 +17,7 @@ const sequelize = new Sequelize({
 
 async function syncBd(){
     try {
-        await sequelize.sync({force: true});
+        await sequelize.sync({force: false});
         console.log('Banco de dados sincronizado!')
     } catch (error) {
         console.error('Erro ao sincronizar banco de dados!', error);

@@ -16,6 +16,10 @@ Disciplinas.init({
     ch: {
         type: DataTypes.INTEGER(),
         allowNull: false
+    },
+    professor: {
+        type: DataTypes.STRING(60),
+        allowNull: false
     }
 },
 {
