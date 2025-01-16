@@ -36,7 +36,7 @@ async function salvarDisciplina() {
   const editMode = $('#editMode').val() === 'true';
   
   try {
-    const response = await fetch(editMode ? `/disciplinas/editar/${$('#codigo').val()}` : '/disciplinas/cadastrar', {
+    const response = await fetch(editMode ? `/api/disciplinas/editar/${$('#codigo').val()}` : '/api/disciplinas/cadastrar', {
       method: editMode ? 'PUT' : 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ async function salvarDisciplina() {
 // Função para buscar e renderizar disciplinas
 async function fetchDisciplinas() {
   try {
-    const response = await fetch('/disciplinas');
+    const response = await fetch('/api/disciplinas');
     if (!response.ok) {
       throw new Error('Erro ao buscar disciplinas.');
     }
@@ -93,7 +93,7 @@ async function fetchDisciplinas() {
   async function excluirDisciplina(codigo) {
     if (confirm('Tem certeza que deseja excluir esta disciplina?')) {
       try {
-        const response = await fetch(`/disciplinas/excluir/${codigo}`, {
+        const response = await fetch(`/api/disciplinas/excluir/${codigo}`, {
           method: 'DELETE',
         });
         
@@ -113,7 +113,7 @@ async function fetchDisciplinas() {
   // Função para editar uma disciplina
   async function editarDisciplina(codigo) {
     try {
-      const response = await fetch(`/disciplinas/${codigo}`);
+      const response = await fetch(`/api/disciplinas/${codigo}`);
       if (!response.ok) {
         throw new Error('Erro ao buscar os dados da disciplina.');
       }

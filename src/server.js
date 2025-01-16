@@ -2,6 +2,7 @@ const express = require('express');
 const {resolve} = require('path');
 const db = require('./config/db');
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
+const cursosRoutes = require('./routes/cursosRoutes');
 const gerenciarDisciplinas = require('./routes/gerenciarDisciplinaRoutes');
 
 const app = express();
@@ -15,7 +16,8 @@ app.use(express.urlencoded({extended: true}))
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
 // Rotas
-app.use('/disciplinas', disciplinaRoutes);
+app.use('/api', disciplinaRoutes);
+app.use('/api', cursosRoutes);
 app.use('/gerenciar_disciplinas', gerenciarDisciplinas)
 
 // app.get('/', (req, res)=>{

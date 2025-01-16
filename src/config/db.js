@@ -1,7 +1,8 @@
 const {Sequelize} = require('sequelize');
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: './src/database/gestao_escolar.sqlite'
+    storage: './src/database/gestao_escolar.sqlite',
+    logging: false
 });
 
 (async()=>{
