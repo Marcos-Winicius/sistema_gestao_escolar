@@ -22,7 +22,7 @@ module.exports = {
         try {
             const disciplina = await Disciplinas.findByPk(codigo);
             if(disciplina){
-                res.status(200).json({disciplina})
+                res.status(200).json(disciplina)
             }else{
                 res.status(404).json({error: "Disciplina não encontrada!"})
             }
