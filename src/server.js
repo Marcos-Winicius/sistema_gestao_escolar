@@ -4,6 +4,7 @@ const db = require('./config/db');
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
 const cursosRoutes = require('./routes/cursosRoutes');
 const gerenciarDisciplinas = require('./routes/gerenciarDisciplinaRoutes');
+const disciplinasCurso = require('./routes/disciplinasCursoRouter');
 
 const app = express();
 const port = 8080
@@ -18,6 +19,7 @@ app.set('views', './src/views');
 // Rotas
 app.use('/api', disciplinaRoutes);
 app.use('/api', cursosRoutes);
+app.use('/api', disciplinasCurso);
 app.use('/gerenciar_disciplinas', gerenciarDisciplinas)
 
 // app.get('/', (req, res)=>{
