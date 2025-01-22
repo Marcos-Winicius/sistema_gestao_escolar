@@ -31,9 +31,14 @@ DisciplinasCurso.init({
         {
             unique: true,
             fields: ['id_disciplina', 'id_curso'], // Definindo os campos da chave composta
-        },
-    ]
+        }
+    ],
+    primaryKey: false,
 })
+
+// Define as chaves compostas como primárias
+DisciplinasCurso.removeAttribute('id'); // Remove o campo `id` padrão
+DisciplinasCurso.primaryKeyAttributes = ['id_disciplina', 'id_curso'];
 
 module.exports = DisciplinasCurso;
 

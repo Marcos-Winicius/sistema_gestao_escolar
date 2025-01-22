@@ -11,23 +11,30 @@ const disciplinasCursoController = {
       return res.status(500).json({ error: 'Erro ao buscar os dados.' });
     }
   },
-  async listarByCurso(req, res){
+  async listarByCurso(req, res) {
     try {
-        const {id_curso} = req.params
-        if(!id_curso){
-            return res.status(400).json({error: "Ausência de parâmetros"})
-        }
-        const disciplinasCurso = await DisciplinasCurso.findOne({where: {id_curso}});
-        if(disciplinasCurso.length > 0){
-            return res.status(200).json(disciplinasCurso);
-        }else{
-            return res.status(404).json({error: "Este curso não possui disciplinas ou não existe!"});
-        }
-      } catch (error) {
-        console.error('Erro ao listar disciplinas e cursos:', error);
-        return res.status(500).json({ error: 'Erro ao buscar os dados.' });
+      const { id_curso } = req.params;
+  
+      if (!id_curso) {
+        return res.status(400).json({ error: "Ausência de parâmetros" });
       }
-  },
+  
+      // Busca todas as disciplinas relacionadas ao curso
+      const disciplinasCurso = await DisciplinasCurso.findAll({
+        where: { id_curso: id_curso }
+      });
+  
+      // Checa se encontrou resultados
+      if (disciplinasCurso && disciplinasCurso.length > 0) {
+        return res.status(200).json(disciplinasCurso);
+      } else {
+        return res.status(404).json({ error: "Este curso não possui disciplinas ou não existe!" });
+      }
+    } catch (error) {
+      console.error('Erro ao listar disciplinas e cursos:', error);
+      return res.status(500).json({ error: 'Erro ao buscar os dados.' });
+    }
+  },  
   // Criar uma nova associação entre disciplina e curso
   async criar(req, res) {
     const { id_disciplina, id_curso } = req.body;
