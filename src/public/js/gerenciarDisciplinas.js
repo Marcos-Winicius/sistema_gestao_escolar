@@ -126,6 +126,10 @@ async function fetchDisciplinas() {
     }
   }
   
+  function voltarPagina() {
+    window.history.back();
+  }
+  
   // Eventos
   $('#btnSalvar').on('click', salvarDisciplina);
   
