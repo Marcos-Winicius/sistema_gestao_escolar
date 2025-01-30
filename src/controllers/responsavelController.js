@@ -1,4 +1,4 @@
-const { responsavel: Responsaveis } = require('../models/responsavel');
+const { responsavel: Responsaveis } = require('../models/responsavelModel');
 
 module.exports = {
   getAll: async (req, res) => {
