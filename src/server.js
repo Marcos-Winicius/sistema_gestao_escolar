@@ -4,7 +4,7 @@ const db = require('./config/db');
 // Rotas
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
 const cursosRoutes = require('./routes/cursosRoutes');
-const gerenciarDisciplinas = require('./routes/gerenciarDisciplinaRoutes');
+const gerenciarDisciplinas = require('./routes/gerenciarPagesRoutes');
 const disciplinasCurso = require('./routes/disciplinasCursoRouter');
 const alunosRoutes = require('./routes/alunosRoutes');
 const responsavelRoutes = require('./routes/responsavelRoutes');
@@ -29,7 +29,7 @@ app.use('/api', alunosRoutes);
 app.use('/api', responsavelRoutes);
 app.use('/api', professorRoutes);
 app.use('/api', adminRoutes);
-app.use('/gerenciar_disciplinas', gerenciarDisciplinas)
+app.use('/gerenciar', gerenciarDisciplinas)
 
 // app.get('/', (req, res)=>{
 //     res.send('<h1>Teste</h1>')
