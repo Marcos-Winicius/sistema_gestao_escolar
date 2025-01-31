@@ -32,15 +32,14 @@ module.exports = {
 
   create: async (req, res) => {
     try {
-      const { matricula, nome, cpf, data_nascimento, serie, turma, email, responsavel, senha_acesso, status } = req.body;
-
+      const { nome, cpf, data_nascimento, email, responsavel, senha_acesso, status } = req.body;
+      console.log(req.body);
+      const matricula = await getNewMatricula();
       const novoAluno = await Alunos.create({
         matricula,
         nome,
         cpf,
         data_nascimento,
-        serie,
-        turma,
         email,
         responsavel,
         senha_acesso,
@@ -89,3 +88,20 @@ module.exports = {
     }
   }
 };
+
+async function getNewMatricula(){
+  // Implantar lógica de criação da matrícula usando o ano
+  const ultima_matricula = await Alunos.findOne({
+    order: [['matricula', 'DESC']]
+  })
+
+  const ano = new Date().getFullYear().toString();
+  let incremento = 1
+  if(ultima_matricula){
+    const ultimo_incremento = parseInt(ultima_matricula.matricula.slice(-2), 10)
+    incremento += ultimo_incremento
+  }
+
+  const matricula = `${ano}${incremento.toString().padStart(2, '0')}`
+  return matricula;
+}

@@ -10,10 +10,10 @@ function abrirModalCadastroAluno() {
 function abrirModalEdicaoAluno(aluno) {
     $('#matricula').val(aluno.matricula);
     $('#nome').val(aluno.nome);
-    $('#serie').val(aluno.serie);
-    $('#turma').val(aluno.turma);
+    $('#cpf').val(aluno.cpf);
     $('#email').val(aluno.email);
-    $('#status').val(aluno.status);
+    $('#responsavel').val(aluno.responsavel);
+    $('#status').val(aluno.status ? '1' : "0");
     $('#editMode').val('true'); // Define modo de edição
     $('#modalAlunoLabel').text('Editar Aluno');
     $('#modalAluno').modal('show'); // Abre o modal
@@ -30,9 +30,11 @@ async function salvarAluno() {
     
     const aluno = {
         nome: $('#nome').val(),
-        serie: $('#serie').val(),
-        turma: $('#turma').val(),
+        cpf: $('#cpf').val(),
+        data_nascimento: $("#data_nascimento").val(),
+        responsavel: $('#responsavel').val(),
         email: $('#email').val(),
+        senha_acesso: $("#senha").val(),
         status: $('#status').val()
     };
     
@@ -75,9 +77,10 @@ async function fetchAlunos() {
                 <tr>
                     <td>${aluno.matricula}</td>
                     <td>${aluno.nome}</td>
-                    <td>${aluno.serie}</td>
-                    <td>${aluno.turma}</td>
-                    <td><span class="badge ${aluno.status === 'Ativo' ? 'bg-success' : 'bg-danger'}">${aluno.status}</span></td>
+                    <td>${aluno.cpf}</td>
+                    <td>${aluno.email}</td>
+                    <td>${aluno.responsavel}</td>
+                    <td><span class="badge ${aluno.status == true ? 'bg-success' : 'bg-danger'}">${aluno.status ? "Ativo" : "Inativo"}</span></td>
                     <td>
                         <button class="btn btn-warning btn-sm" onclick="editarAluno('${aluno.matricula}')">Editar</button>
                         <button class="btn btn-danger btn-sm" onclick="excluirAluno('${aluno.matricula}')">Excluir</button>

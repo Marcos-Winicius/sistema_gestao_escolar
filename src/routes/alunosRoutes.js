@@ -15,6 +15,6 @@ router.post('/alunos/cadastrar', alunoController.create);
 router.put('/alunos/editar/:matricula', alunoController.update);
 
 // Rota para deletar um aluno
-router.delete('/alunos/:matricula', alunoController.delete);
+router.delete('/alunos/excluir/:matricula', alunoController.delete);
 
 module.exports = router;

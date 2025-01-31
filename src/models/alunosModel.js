@@ -20,14 +20,6 @@ exports.aluno = sequelize.define('Alunos', {
         type: DataTypes.DATE,
         allowNull: false
     },
-    serie: {
-        type: DataTypes.TINYINT,
-        allowNull: false
-    },
-    turma: {
-        type: DataTypes.STRING(2),
-        defaultValue: 'A'
-    },
     email: {
         type: DataTypes.STRING(40),
     },
