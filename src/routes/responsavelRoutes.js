@@ -6,15 +6,15 @@ const Responsavel = require('../controllers/responsavelController');
 router.get('/responsavel', Responsavel.getAll);
 
 // Criar um responsável
-router.post('/responsavel', Responsavel.create);
+router.post('/responsavel/cadastrar', Responsavel.create);
 
 // Buscar um responsável por CPF
 router.get('/responsavel/:cpf', Responsavel.getByCpf);
 
 // Atualizar um responsável
-router.put('/responsavel/:cpf', Responsavel.update);
+router.put('/responsavel/editar/:cpf', Responsavel.update);
 
 // Deletar um responsável
-router.delete('/responsavel/:cpf', Responsavel.delete);
+router.delete('/responsavel/excluir/:cpf', Responsavel.delete);
 
 module.exports = router;

@@ -3,7 +3,9 @@ const { responsavel: Responsaveis } = require('../models/responsavelModel');
 module.exports = {
   getAll: async (req, res) => {
     try {
-      const responsaveis = await Responsaveis.findAll();
+      const responsaveis = await Responsaveis.findAll({
+        attributes: { exclude: ['senha_acesso'] }
+    });
       if (responsaveis.length > 0) {
         res.json(responsaveis);
       } else {
@@ -18,7 +20,11 @@ module.exports = {
   getByCpf: async (req, res) => {
     try {
       const { cpf } = req.params;
-      const responsavel = await Responsaveis.findByPk(cpf);
+      const responsavel = await Responsaveis.findByPk(cpf, {
+        attributes: {
+          exclude: ['senha_acesso']
+        }
+      });
       if (responsavel) {
         res.json(responsavel);
       } else {
