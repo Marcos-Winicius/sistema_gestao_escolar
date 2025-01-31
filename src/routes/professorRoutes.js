@@ -6,15 +6,15 @@ const Professor = require('../controllers/professorController');
 router.get('/professor', Professor.getAll);
 
 // Criar um professor
-router.post('/professor', Professor.create);
+router.post('/professor/cadastrar', Professor.create);
 
 // Buscar um professor por CPF
 router.get('/professor/:cpf', Professor.getByCpf);
 
 // Atualizar um professor
-router.put('/professor/:cpf', Professor.update);
+router.put('/professor/editar/:cpf', Professor.update);
 
 // Deletar um professor
-router.delete('/professor/:cpf', Professor.delete);
+router.delete('/professor/excluir/:cpf', Professor.delete);
 
 module.exports = router;
