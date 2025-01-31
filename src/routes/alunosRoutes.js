@@ -9,10 +9,10 @@ router.get('/alunos', alunoController.getAll);
 router.get('/alunos/:matricula', alunoController.getByMatricula);
 
 // Rota para criar um novo aluno
-router.post('/alunos', alunoController.create);
+router.post('/alunos/cadastrar', alunoController.create);
 
 // Rota para atualizar um aluno existente
-router.put('/alunos/:matricula', alunoController.update);
+router.put('/alunos/editar/:matricula', alunoController.update);
 
 // Rota para deletar um aluno
 router.delete('/alunos/:matricula', alunoController.delete);
