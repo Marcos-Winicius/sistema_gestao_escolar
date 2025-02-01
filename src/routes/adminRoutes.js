@@ -9,12 +9,12 @@ router.get('/administradores', adminController.getAll);
 router.get('/administradores/:id', adminController.getById);
 
 // Rota para criar um novo administrador
-router.post('/administradores', adminController.create);
+router.post('/administradores/cadastrar', adminController.create);
 
 // Rota para atualizar um administrador existente
-router.put('/administradores/:id', adminController.update);
+router.put('/administradores/editar/:id', adminController.update);
 
 // Rota para deletar um administrador
-router.delete('/administradores/:id', adminController.delete);
+router.delete('/administradores/excluir/:id', adminController.delete);
 
 module.exports = router;

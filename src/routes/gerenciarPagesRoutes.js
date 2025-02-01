@@ -17,4 +17,8 @@ router.get('/professor', (req, res)=>{
     res.render('gerenciarProfessores')
 })
 
+router.get('/administrador', (req, res)=>{
+    res.render('gerenciarAdministradores')
+})
+
 module.exports = router;

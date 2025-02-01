@@ -147,3 +147,7 @@ $('#btnSalvarProfessor').on('click', salvarProfessor);
 $(document).ready(async () => {
     await fetchProfessores();
 });
+
+function voltarPagina() {
+    window.history.back();
+}
