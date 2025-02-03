@@ -1,19 +1,21 @@
 const express = require('express');
 const {resolve} = require('path');
 const db = require('./config/db');
-// Rotas
+// Rotas API
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
 const cursosRoutes = require('./routes/cursosRoutes');
-const gerenciarDisciplinas = require('./routes/gerenciarPagesRoutes');
 const disciplinasCurso = require('./routes/disciplinasCursoRouter');
 const alunosRoutes = require('./routes/alunosRoutes');
 const responsavelRoutes = require('./routes/responsavelRoutes');
 const professorRoutes = require('./routes/professorRoutes')
 const adminRoutes = require('./routes/adminRoutes')
 
+// Paginas
+const gerenciarDisciplinas = require('./routes/gerenciarPagesRoutes');
+const alunosPage = require('./routes/alunosPagesRoutes')
+// env
+require('dotenv').config();
 const app = express();
-const port = 8080
-const host = 'localhost'
 
 app.use(express.json());
 app.use(express.static(resolve('./src/public')));
@@ -30,11 +32,9 @@ app.use('/api', responsavelRoutes);
 app.use('/api', professorRoutes);
 app.use('/api', adminRoutes);
 app.use('/gerenciar', gerenciarDisciplinas)
+app.use('/alunos', alunosPage);
 
-// app.get('/', (req, res)=>{
-//     res.send('<h1>Teste</h1>')
-// })
 
-app.listen(port, host, ()=>{
-    console.log(`Servidor inicializado no endereço: http://${host}:${port}`)
+app.listen(process.env.PORTA, process.env.HOST, ()=>{
+    console.log(`Servidor inicializado no endereço: http://${process.env.HOST}:${process.env.PORTA}`)
 })

@@ -1,5 +1,7 @@
 const {Router} = require('express');
 const router = Router();
+// Middleware auth
+// const {verifyToken} = require('../middleware/auth');
 
 router.get('/disciplinas', (req, res)=>{
     res.render('gerenciarDisciplinas')
