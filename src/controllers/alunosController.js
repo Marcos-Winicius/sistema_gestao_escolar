@@ -103,7 +103,7 @@ module.exports = {
       }
       
       // Verificar se a senha é a mesma
-      const validarSenha = await bcrypt.compare(senha, usuario.senha);
+      const validarSenha = await bcrypt.compare(senha, usuario.senha_acesso);
       if(!validarSenha){
         return res.render('loginEstudante', {error: "Senha inválida!"})
       }
@@ -114,10 +114,31 @@ module.exports = {
       // Apenas para depurar -> console.log(token)
       // Salve o token em um cookie e redirecione para a página do usuário
       res.cookie('auth_token', token, { httpOnly: true });
-      res.redirect('/home');
+      res.redirect('/');
       
     } catch (error) {
       console.error(error)
+    }
+  },
+  cadastro: async(req, res)=>{
+    const { nome, cpf, data_nascimento, email, responsavel, senha } = req.body;
+    try {
+      // Verificar se existe algum usuario com o mesmo email.
+      if(await Alunos.findOne({where: {email}})){
+        return res.render('cadastroEstudante', {error: "Esse login já existe!"})
+      }
+      // Criar senha criptografada
+      const senha_acesso = await bcrypt.hash(senha, 10);
+      // 
+      // Criar matrícula
+      const matricula = await getNewMatricula();
+      // Criar usuario no banco
+      await Alunos.create({matricula, nome, cpf, data_nascimento, email, responsavel, senha_acesso})
+      res.redirect('/alunos/login');
+
+    } catch (error) {
+      console.error(error)
+      return res.render('cadastroEstudante', {error})
     }
   }
 };

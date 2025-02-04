@@ -13,6 +13,7 @@ const adminRoutes = require('./routes/adminRoutes')
 // Paginas
 const gerenciarDisciplinas = require('./routes/gerenciarPagesRoutes');
 const alunosPage = require('./routes/alunosPagesRoutes')
+const publicPage = require('./routes/publicPages')
 // env
 require('dotenv').config();
 const app = express();
@@ -23,7 +24,7 @@ app.use(express.urlencoded({extended: true}))
 
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
-// Rotas
+// Rotas api
 app.use('/api', disciplinaRoutes);
 app.use('/api', cursosRoutes);
 app.use('/api', disciplinasCurso);
@@ -31,6 +32,8 @@ app.use('/api', alunosRoutes);
 app.use('/api', responsavelRoutes);
 app.use('/api', professorRoutes);
 app.use('/api', adminRoutes);
+// Rotas páginas
+app.use('/', publicPage); 
 app.use('/gerenciar', gerenciarDisciplinas)
 app.use('/alunos', alunosPage);
 
