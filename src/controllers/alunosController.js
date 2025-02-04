@@ -110,11 +110,11 @@ module.exports = {
       
       // Se tudo der certo iremos criar o token e jogar nos cookies
       
-      const token = jwt.sign({ matricula: usuario.matricula, nome: usuario.nome, tipo: 'Aluno'}, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ id: usuario.matricula, nome: usuario.nome, tipo: 'Aluno'}, process.env.JWT_SECRET, { expiresIn: '1h' });
       // Apenas para depurar -> console.log(token)
       // Salve o token em um cookie e redirecione para a página do usuário
       res.cookie('auth_token', token, { httpOnly: true });
-      res.redirect('/');
+      res.redirect('/home');
       
     } catch (error) {
       console.error(error)
