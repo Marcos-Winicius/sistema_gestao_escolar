@@ -1,42 +1,21 @@
 // Professores
 const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
+const {Usuario: Usuarios} = require('./usuariosModel')
 
 exports.professor = sequelize.define('professores', {
-    nome: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
-    cpf: {
-        type: DataTypes.STRING(11),
-        allowNull: true,
-        primaryKey: true
-    },
-    data_nascimento: {
-        type: DataTypes.DATE,
-        allowNull: true
-    },
-    email: {
+    id_usuario: {
         type: DataTypes.STRING(40),
-        allowNull: true
-    },
-    telefone: {
-        type: DataTypes.STRING(11),
-        allowNull: false
+        primaryKey: true,
+        references: {
+            model: Usuarios,
+            key: 'id'
+        }
     },
     formacao_academica: {
         type: DataTypes.TEXT,
         allowNull: false
     },
-    senha_acesso: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 1
-    }
-
 },
 {
     timestamps: false,

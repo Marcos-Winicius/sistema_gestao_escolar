@@ -1,25 +1,16 @@
 // Coordenadores, Diretores ou Secretários
 const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
+const {Usuario: Usuarios} = require('./usuariosModel')
 
 exports.admin = sequelize.define('Administradores', {
-    id: {
+    id_usuario: {
         type: DataTypes.STRING(40),
-        allowNull: false,
-        primaryKey: true
-    },
-    nome: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
-    cpf: {
-        type: DataTypes.STRING(11),
-        allowNull: false,
-        unique: true
-    },
-    data_nascimento: {
-        type: DataTypes.DATE,
-        allowNull: false
+        primaryKey: true,
+        references: {
+            model: Usuarios,
+            key: 'id'
+        }
     },
     cargo: {
         type: DataTypes.ENUM(['Diretor', 'Coordenador', 'Secretário']),
@@ -31,22 +22,9 @@ exports.admin = sequelize.define('Administradores', {
             }
         }
     },
-    email: {
-        type: DataTypes.STRING(40),
-        allowNull: false
-    },
-    senha_acesso: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: 1
-    }
-
+    
 },
 {
-    timestamps: false,
+    timestamps: true,
     modelName: 'Administradores'
 })

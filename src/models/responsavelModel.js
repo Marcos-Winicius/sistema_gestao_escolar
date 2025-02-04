@@ -1,41 +1,21 @@
 // Responsáveis
 const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
+const {Usuario: Usuarios} = require('./usuariosModel')
 
 exports.responsavel = sequelize.define('Responsáveis', {
-    nome: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
-    cpf: {
-        type: DataTypes.STRING(11),
-        allowNull: true,
-        primaryKey: true
-    },
-    data_nascimento: {
-        type: DataTypes.DATE,
-        allowNull: true
-    },
-    email: {
+    id_usuario: {
         type: DataTypes.STRING(40),
-    },
-    telefone: {
-        type: DataTypes.STRING(11),
-        allowNull: false
+        primaryKey: true,
+        references: {
+            model: Usuarios,
+            key: 'id'
+        }
     },
     parentesco: {
         type: DataTypes.STRING(15),
         allowNull: false
-    },
-    senha_acesso: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 1
     }
-
 },
 {
     timestamps: false,
