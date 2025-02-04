@@ -1,9 +1,15 @@
 const { admin: Administradores } = require('../models/adminModel');
+const {Usuario: Usuarios} = require('../models/usuariosModel')
 
 module.exports = {
   getAll: async (req, res) => {
     try {
-      const admins = await Administradores.findAll();
+      const admins = await Usuarios.findAll({
+        include: {
+          model: Administradores,
+          as: 'admins'
+        }
+      });
       if (admins.length > 0) {
         res.json(admins);
       } else {
