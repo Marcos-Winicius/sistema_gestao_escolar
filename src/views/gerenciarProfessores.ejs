@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Professores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script defer src="/js/gerenciarProfessores.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Gestão Escolar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="#login">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal de Cadastro/Edição -->
+    <div class="modal fade" id="modalProfessor" tabindex="-1" aria-labelledby="modalProfessorLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalProfessorLabel">Cadastrar Professor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formProfessor">
+                        <input type="hidden" id="editMode" value="false">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nome" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">CPF</label>
+                            <input type="text" minlength="11" maxlength="11" class="form-control" id="cpf" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Data de Nascimento</label>
+                            <input type="date" class="form-control" id="data_nascimento" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="telefone" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Formação Acadêmica</label>
+                            <input type="text" class="form-control" id="formacao_academica" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Senha de Acesso</label>
+                            <input type="password" class="form-control" id="senha" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="status" required>
+                                <option value="1">Ativo</option>
+                                <option value="0">Inativo</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnSalvarProfessor">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Gerenciar Professores</h1>
+        <div class="mb-3">
+            <button class="btn btn-secondary" onclick="voltarPagina()">Voltar</button>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Formação Acadêmica</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="professor-tbody">
+                <!-- Professores serão renderizados aqui -->
+            </tbody>
+        </table>
+        <div class="mb-3">
+            <button class="btn btn-primary" onclick="abrirModalCadastroProfessor()">Cadastrar Professor</button>
+        </div>
+    </div>
+</body>
+</html>

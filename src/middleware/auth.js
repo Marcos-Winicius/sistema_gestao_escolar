@@ -6,12 +6,12 @@ exports.verifyToken = (req, res, next)=>{
 
     if(!token){
         // caso não haja token, redirecionar para página de login
-        return res.redirect('/login');
+        return res.redirect('/alunos/login');
     }
 
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded)=>{
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded)=>{
         if(err){
-            return res.redirect('/login');
+            return res.redirect('/alunos/login');
         }
 
         req.user = {

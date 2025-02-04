@@ -1,0 +1,110 @@
+<!-- cadastro.ejs -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            color: #1e3c72;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .options {
+            margin-top: 15px;
+        }
+
+        .options a {
+            color: #1e3c72;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .options a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Criar Conta</h2>
+        <form action="/alunos/cadastro" method="POST">
+            <input type="text" name="nome" placeholder="Nome completo" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="cpf" placeholder="CPF (somente números)" required>
+            <input type="date" name="data_nascimento" required>
+            <input type="text" name="responsavel" placeholder="Nome do responsável (se houver)">
+            <input type="password" name="senha" placeholder="Senha" required>
+            <input type="password" name="confirmarSenha" placeholder="Confirme sua senha" required>
+
+            <% if (typeof error !== 'undefined') { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+
+            <button type="submit">Cadastrar</button>
+
+            <div class="options">
+                <a href="/alunos/login">Já tem uma conta? Faça login</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
