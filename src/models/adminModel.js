@@ -3,14 +3,15 @@ const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 const {Usuario: Usuarios} = require('./usuariosModel')
 
-exports.admin = sequelize.define('Administradores', {
+const Admin = sequelize.define('Administradores', {
     id_usuario: {
         type: DataTypes.STRING(40),
         primaryKey: true,
         references: {
             model: Usuarios,
             key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
     },
     cargo: {
         type: DataTypes.ENUM(['Diretor', 'Coordenador', 'Secretário']),
@@ -27,7 +28,10 @@ exports.admin = sequelize.define('Administradores', {
 {
     timestamps: true,
     modelName: 'Administradores'
-}).belongsTo(Usuarios, {
+})
+Admin.belongsTo(Usuarios, {
     foreignKey: 'id_usuario',
     as: 'usuario_adm'
 });
+
+module.exports = Admin

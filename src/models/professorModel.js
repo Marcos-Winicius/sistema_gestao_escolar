@@ -3,14 +3,15 @@ const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 const {Usuario: Usuarios} = require('./usuariosModel')
 
-exports.professor = sequelize.define('professores', {
+const Professor = sequelize.define('professores', {
     id_usuario: {
         type: DataTypes.STRING(40),
         primaryKey: true,
         references: {
             model: Usuarios,
             key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
     },
     formacao_academica: {
         type: DataTypes.TEXT,
@@ -20,7 +21,11 @@ exports.professor = sequelize.define('professores', {
 {
     timestamps: false,
     modelName: 'Professores'
-}).belongsTo(Usuarios, {
+})
+
+Professor.belongsTo(Usuarios, {
     foreignKey: 'id_usuario',
     as: 'usuario_professor'
 });
+
+module.exports = Professor;

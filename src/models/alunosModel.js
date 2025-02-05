@@ -31,7 +31,7 @@ const Aluno = sequelize.define('Alunos', {
 // **Definição da relação**
 Aluno.belongsTo(Usuarios, {
     foreignKey: 'id_usuario',
-    as: 'usuario'
+    as: 'usuario_aluno'
 });
 
 module.exports = Aluno;
