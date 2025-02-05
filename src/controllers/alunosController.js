@@ -10,7 +10,8 @@ module.exports = {
       const alunos = await Alunos.findAll({
         include: {
           model: Usuarios,
-          as: "usuario"
+          as: "usuario",
+          attributes: {exclude: ['senha_acesso', 'login']}
         },
         raw: true, // Retorna um objeto plano
         nest: false // Impede que Sequelize aninhe os resultados
@@ -144,7 +145,7 @@ create: async (req, res) => {
 update: async (req, res) => {
   try {
     const { matricula } = req.params;
-    const { nome, cpf, data_nascimento, responsavel, status } = req.body;
+    const { nome, cpf, data_nascimento, telefone, responsavel, status } = req.body;
     
     const aluno = await Alunos.findByPk(matricula);
     if (!aluno) {
@@ -153,7 +154,7 @@ update: async (req, res) => {
     // Após achar o aluno, pegar o id e modificar o usuario principal
     const usuario = await Usuarios.findByPk(aluno.id_usuario);
     // Atualizar usuario principal
-    await usuario.update({nome, cpf, data_nascimento, status})
+    await usuario.update({nome, cpf, data_nascimento, telefone, status})
     // Atualizar aluno
     await aluno.update({  responsavel });
     
@@ -171,8 +172,8 @@ delete: async (req, res) => {
     if (!aluno) {
       return res.status(404).json({ error: "Aluno não encontrado!" });
     }
-    
-    await aluno.destroy();
+    const usuario = await Usuarios.findByPk(aluno.id_usuario);
+    await usuario.destroy();
     res.json({ message: "Aluno removido com sucesso!" });
   } catch (error) {
     console.error("Erro ao deletar aluno!", error);
