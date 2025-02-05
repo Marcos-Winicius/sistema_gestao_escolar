@@ -13,15 +13,21 @@ module.exports = {
           as: "usuario_aluno",
           attributes: {exclude: ['senha_acesso', 'login']}
         },
-        raw: true, // Retorna um objeto plano
-        nest: false // Impede que Sequelize aninhe os resultados
       }
     );
-    if (alunos.length > 0) {
-      res.json(alunos);
-    } else {
-      res.status(404).json({ error: "Nenhum aluno encontrado!" });
-    }
+    
+    // Processa os dados para remover o aninhamento
+    const formattedAlunos = alunos.map(aluno => {
+      // Converte para objeto simples e extrai a associação
+      const alunoData = aluno.get({ plain: true });
+      const { usuario_aluno, ...rest } = alunoData;
+      return {
+        ...rest,
+        ...usuario_aluno // Mescla os campos do usuário
+      };
+    });
+    res.json(formattedAlunos);
+    
   } catch (error) {
     console.error("Erro ao buscar alunos!", error);
     res.status(500).json({ error: "Erro ao buscar alunos!" });

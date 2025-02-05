@@ -43,24 +43,7 @@
 </head>
 <body>
     <!-- Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Gestão Escolar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/home">Início</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
-                        <li class="nav-item"><a class="nav-link btn btn-danger text-white" href="/logout">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <%- include('partials/header') %> 
     
     <!-- Features Section -->
     <main>
@@ -105,6 +88,7 @@
                             </div>
                         </div>
                         <%}%>
+                        <% if(user.tipo == 'Aluno'){%>
                         <div class="col-md-4 text-center">
                             <div class="card shadow-sm h-100">
                                 <div class="card-body row g-1 align-items-center">
@@ -114,6 +98,7 @@
                                 </div>
                             </div>
                         </div>
+                        <%}%>
                     </div>
                 </div>
             </section>

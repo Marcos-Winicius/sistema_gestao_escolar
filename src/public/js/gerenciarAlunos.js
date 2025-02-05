@@ -34,11 +34,13 @@ async function salvarAluno() {
         data_nascimento: $("#data_nascimento").val(),
         responsavel: $('#responsavel').val(),
         email: $('#email').val(),
-        senha_acesso: $("#senha").val(),
-        status: $('#status').val()
+        senha_acesso: $("#senha").val()
     };
     
     const editMode = $('#editMode').val() === 'true';
+    if(!editMode){
+        aluno.login = $('#login').val()
+    }
     const matricula = $('#matricula').val();
     
     try {
@@ -72,8 +74,9 @@ async function fetchAlunos() {
         const tableBody = $('#alunos-tbody');
         tableBody.empty();
         
-        alunos.forEach((aluno) => {
-            tableBody.append(`
+        if(alunos.length > 0){
+            alunos.forEach((aluno) => {
+                tableBody.append(`
                 <tr>
                     <td>${aluno.matricula}</td>
                     <td>${aluno.nome}</td>
@@ -86,8 +89,12 @@ async function fetchAlunos() {
                         <button class="btn btn-danger btn-sm" onclick="excluirAluno('${aluno.matricula}')">Excluir</button>
                     </td>
                 </tr>`
-            );
-        });
+                );
+            });
+        }
+        else{
+            console.log('nenhum aluno encontrado')
+        }
     } catch (error) {
         alert(error.message);
         console.error(error);
@@ -116,7 +123,7 @@ async function excluirAluno(matricula) {
 // Função para editar aluno
 async function editarAluno(matricula) {
     try {
-        const response = await fetch(`/api/alunos/${matricula}`);
+        const response = await fetch(`/api/alunos/editar/${matricula}`);
         if (!response.ok) throw new Error('Erro ao buscar dados do aluno.');
         
         const aluno = await response.json();
