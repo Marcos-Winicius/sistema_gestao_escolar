@@ -101,8 +101,8 @@
     <!-- NAVBAR -->
     <div class="container">
         <h2>Login</h2>
-        <form action="/alunos/login" method="POST">
-            <input type="email" name="email" placeholder="Email" required>
+        <form action="/login" method="POST">
+            <input type="text" max="30" name="login" placeholder="Login" required>
             <input type="password" name="senha" placeholder="Senha" required>
 
             <% if (typeof error !== 'undefined') { %>

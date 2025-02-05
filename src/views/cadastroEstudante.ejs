@@ -92,8 +92,8 @@
             <input type="text" name="cpf" placeholder="CPF (somente números)" required>
             <input type="date" name="data_nascimento" required>
             <input type="text" name="responsavel" placeholder="Nome do responsável (se houver)">
+            <input type="text" name="login" placeholder="Login">
             <input type="password" name="senha" placeholder="Senha" required>
-            <input type="password" name="confirmarSenha" placeholder="Confirme sua senha" required>
 
             <% if (typeof error !== 'undefined') { %>
                 <p class="error"><%= error %></p>
@@ -102,7 +102,7 @@
             <button type="submit">Cadastrar</button>
 
             <div class="options">
-                <a href="/alunos/login">Já tem uma conta? Faça login</a>
+                <a href="/login">Já tem uma conta? Faça login</a>
             </div>
         </form>
     </div>

@@ -138,37 +138,6 @@ delete: async (req, res) => {
     res.status(500).json({ error: "Erro ao deletar aluno!" });
   }
 },
-login: async(req, res)=>{
-  const {login, senha} = req.body;
-  if(!login || !senha){
-    return res.render('loginEstudante', {error: "Informações Ausentes!!"})
-  }
-  try {
-    // Verificar se existe no banco
-    const usuario = await Usuarios.findOne({where: {login}});
-    
-    if(!usuario){
-      return res.render('login', {error: "Esse login não existe!"})
-    }
-    
-    // Verificar se a senha é a mesma
-    const validarSenha = await bcrypt.compare(senha, usuario.senha_acesso);
-    if(!validarSenha){
-      return res.render('login', {error: "Senha inválida!"})
-    }
-    
-    // Se tudo der certo iremos criar o token e jogar nos cookies
-    
-    const token = jwt.sign({ id: usuario.matricula, nome: usuario.nome, tipo: 'Aluno'}, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // Apenas para depurar -> console.log(token)
-    // Salve o token em um cookie e redirecione para a página do usuário
-    res.cookie('auth_token', token, { httpOnly: true });
-    res.redirect('/home');
-    
-  } catch (error) {
-    console.error(error)
-  }
-},
 cadastro: async(req, res)=>{
   const { nome, cpf, data_nascimento, login, email, responsavel, senha } = req.body;
   try {
@@ -182,9 +151,9 @@ cadastro: async(req, res)=>{
     // Criar matrícula
     const matricula = await getNewMatricula();
     // Criar usuario no banco
-    const novoUser = await Usuarios.create({ id: uuidv4(), nome, cpf, data_nascimento, login, email, senha_acesso});
+    const novoUser = await Usuarios.create({ id: uuidv4(), nome, cpf, data_nascimento, login, email, senha_acesso, tipo: 'Aluno'});
     await Alunos.create({matricula, responsavel, id_usuario: novoUser.id});
-    res.redirect('/alunos/login');
+    res.redirect('/login');
     
   } catch (error) {
     console.error(error)
