@@ -20,4 +20,7 @@ exports.responsavel = sequelize.define('Responsáveis', {
 {
     timestamps: false,
     modelName: 'Responsáveis'
-})
+}).belongsTo(Usuarios, {
+    foreignKey: 'id_usuario',
+    as: 'usuario_responsavel'
+});

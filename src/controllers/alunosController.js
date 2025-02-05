@@ -144,14 +144,18 @@ create: async (req, res) => {
 update: async (req, res) => {
   try {
     const { matricula } = req.params;
-    const { nome, cpf, data_nascimento, serie, turma, email, responsavel, senha_acesso, status } = req.body;
+    const { nome, cpf, data_nascimento, responsavel, status } = req.body;
     
     const aluno = await Alunos.findByPk(matricula);
     if (!aluno) {
       return res.status(404).json({ error: "Aluno não encontrado!" });
     }
-    
-    await aluno.update({ nome, cpf, data_nascimento, serie, turma, email, responsavel, senha_acesso, status });
+    // Após achar o aluno, pegar o id e modificar o usuario principal
+    const usuario = await Usuarios.findByPk(aluno.id_usuario);
+    // Atualizar usuario principal
+    await usuario.update({nome, cpf, data_nascimento, status})
+    // Atualizar aluno
+    await aluno.update({  responsavel });
     
     res.json({ message: "Aluno atualizado com sucesso!" });
   } catch (error) {

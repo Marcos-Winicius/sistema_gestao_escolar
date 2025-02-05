@@ -20,4 +20,7 @@ exports.professor = sequelize.define('professores', {
 {
     timestamps: false,
     modelName: 'Professores'
-})
+}).belongsTo(Usuarios, {
+    foreignKey: 'id_usuario',
+    as: 'usuario_professor'
+});

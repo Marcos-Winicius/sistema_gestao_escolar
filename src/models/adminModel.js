@@ -27,4 +27,7 @@ exports.admin = sequelize.define('Administradores', {
 {
     timestamps: true,
     modelName: 'Administradores'
-})
+}).belongsTo(Usuarios, {
+    foreignKey: 'id_usuario',
+    as: 'usuario_adm'
+});
