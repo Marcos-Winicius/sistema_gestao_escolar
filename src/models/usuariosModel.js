@@ -31,7 +31,8 @@ exports.Usuario = sequelize.define('Usuarios', {
     },
     email: {
         type: DataTypes.STRING(40),
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     tipo: {
         type: DataTypes.ENUM(roles),

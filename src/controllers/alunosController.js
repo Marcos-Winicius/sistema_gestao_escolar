@@ -98,48 +98,6 @@ create: async (req, res) => {
     console.error("Erro ao criar aluno!", error);
     res.status(500).json({ error: "Erro ao criar aluno!" });
   }
-  //   try {
-  //     const { nome, cpf, data_nascimento, login, telefone, email, senha_acesso, matricula, responsavel } = req.body;
-  
-  //     // 1. Verifica se já existe um usuário com esse CPF ou login
-  // const existingUser = await Usuario.findOne({
-  //     where: {
-  //         cpf
-  //     }
-  // });
-  
-  // if (existingUser) {
-  //     return res.status(400).json({ error: "Usuário com esse CPF já existe!" });
-  // }
-  
-  // // 2. Hash da senha antes de salvar
-  // const hashedPassword = await bcrypt.hash(senha_acesso, 10);
-  
-  //     // 3. Criar o usuário primeiro
-  //     const novoUsuario = await Usuario.create({
-  //         id: require('crypto').randomUUID(), // Gera um ID único para o usuário
-  //         nome,
-  //         cpf,
-  //         data_nascimento,
-  //         tipo: "Aluno", // Definimos como aluno
-  //         login,
-  //         telefone,
-  //         email,
-  //         senha_acesso: hashedPassword
-  //     });
-  
-  // // 4. Criar o aluno com a referência do usuário
-  // const novoAluno = await Aluno.create({
-  //     matricula,
-  //     id_usuario: novoUsuario.id, // Chave estrangeira
-  //     responsavel
-  // });
-  
-  // res.status(201).json({ message: "Aluno cadastrado com sucesso!", aluno: novoAluno });
-  // } catch (error) {
-  //     console.error("Erro ao cadastrar aluno:", error);
-  //     res.status(500).json({ error: "Erro interno do servidor" });
-  // }
 },
 
 update: async (req, res) => {
@@ -181,22 +139,22 @@ delete: async (req, res) => {
   }
 },
 login: async(req, res)=>{
-  const {email, senha} = req.body;
-  if(!email || !senha){
+  const {login, senha} = req.body;
+  if(!login || !senha){
     return res.render('loginEstudante', {error: "Informações Ausentes!!"})
   }
   try {
     // Verificar se existe no banco
-    const usuario = await Alunos.findOne({where: {email}});
+    const usuario = await Usuarios.findOne({where: {login}});
     
     if(!usuario){
-      return res.render('loginEstudante', {error: "Esse login não existe!"})
+      return res.render('login', {error: "Esse login não existe!"})
     }
     
     // Verificar se a senha é a mesma
     const validarSenha = await bcrypt.compare(senha, usuario.senha_acesso);
     if(!validarSenha){
-      return res.render('loginEstudante', {error: "Senha inválida!"})
+      return res.render('login', {error: "Senha inválida!"})
     }
     
     // Se tudo der certo iremos criar o token e jogar nos cookies
@@ -212,10 +170,10 @@ login: async(req, res)=>{
   }
 },
 cadastro: async(req, res)=>{
-  const { nome, cpf, data_nascimento, email, responsavel, senha } = req.body;
+  const { nome, cpf, data_nascimento, login, email, responsavel, senha } = req.body;
   try {
     // Verificar se existe algum usuario com o mesmo email.
-    if(await Alunos.findOne({where: {email}})){
+    if(await Usuarios.findOne({where: {login}})){
       return res.render('cadastroEstudante', {error: "Esse login já existe!"})
     }
     // Criar senha criptografada
@@ -224,7 +182,8 @@ cadastro: async(req, res)=>{
     // Criar matrícula
     const matricula = await getNewMatricula();
     // Criar usuario no banco
-    await Alunos.create({matricula, nome, cpf, data_nascimento, email, responsavel, senha_acesso})
+    const novoUser = await Usuarios.create({ id: uuidv4(), nome, cpf, data_nascimento, login, email, senha_acesso});
+    await Alunos.create({matricula, responsavel, id_usuario: novoUser.id});
     res.redirect('/alunos/login');
     
   } catch (error) {
