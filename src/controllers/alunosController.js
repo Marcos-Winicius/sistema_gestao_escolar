@@ -10,7 +10,7 @@ module.exports = {
       const alunos = await Alunos.findAll({
         include: {
           model: Usuarios,
-          as: "usuario",
+          as: "usuario_aluno",
           attributes: {exclude: ['senha_acesso', 'login']}
         },
         raw: true, // Retorna um objeto plano
@@ -35,7 +35,7 @@ getByMatricula: async (req, res) => {
       where: {matricula},
       include: {
         model: Usuarios,
-        as: "usuario",
+        as: "usuario_aluno",
         attributes: {exclude: ['senha_acesso']}
       },
       raw: true,

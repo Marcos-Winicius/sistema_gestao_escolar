@@ -1,14 +1,19 @@
-const { admin: Administradores } = require('../models/adminModel');
+const Administradores = require('../models/adminModel');
 const {Usuario: Usuarios} = require('../models/usuariosModel')
+const {v4: uuidv4} = require('uuid');
+const bcrypt = require('bcryptjs')
 
 module.exports = {
   getAll: async (req, res) => {
     try {
-      const admins = await Usuarios.findAll({
+      const admins = await Administradores.findAll({
         include: {
-          model: Administradores,
-          as: 'admins'
-        }
+          model: Usuarios,
+          as: 'usuario_adm',
+          attributes: {exclude: ['id_usuario', 'senha_acesso', 'login']}
+        },
+        raw: true,
+        nest: false
       });
       if (admins.length > 0) {
         res.json(admins);
@@ -24,7 +29,15 @@ module.exports = {
   getById: async (req, res) => {
     try {
       const { id } = req.params;
-      const admin = await Administradores.findByPk(id);
+      const admin = await Administradores.findOne({
+        where: {id_usuario: id},
+        include: {
+          model: Usuarios,
+          as: 'usuario_adm'
+        },
+        raw: true,
+        nest: false
+      });
       if (admin) {
         res.json(admin);
       } else {
@@ -38,18 +51,23 @@ module.exports = {
 
   create: async (req, res) => {
     try {
-      const { id, nome, cpf, data_nascimento, cargo, email, senha_acesso, status } = req.body;
+      const {nome, cpf, data_nascimento, cargo, email, telefone, login, senha_acesso, status } = req.body;
+      const hashedPassword = await bcrypt.hash(senha_acesso, 10);
 
-      const novoAdmin = await Administradores.create({
-        id,
+      const novoUser = await Usuarios.create({
+        id: uuidv4(),
         nome,
         cpf,
+        tipo: 'Administrador',
         data_nascimento,
-        cargo,
         email,
-        senha_acesso,
+        telefone,
+        login,
+        senha_acesso: hashedPassword,
         status
       });
+
+      const novoAdmin = await Administradores.create({id_usuario: novoUser.id, cargo})
 
       res.status(201).json(novoAdmin);
     } catch (error) {
@@ -61,15 +79,19 @@ module.exports = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const { nome, cpf, data_nascimento, cargo, email, senha_acesso, status } = req.body;
+      const { nome, cpf, data_nascimento, cargo, email, telefone, status  } = req.body;
 
-      const admin = await Administradores.findByPk(id);
-      if (!admin) {
+      const usuario = await Usuarios.findByPk(id);
+      if (!usuario) {
+        return res.status(404).json({ error: "Usuário não encontrado!" });
+      }
+      
+      const userAdm = await Administradores.findByPk(id);
+      if(!userAdm){
         return res.status(404).json({ error: "Administrador não encontrado!" });
       }
-
-      await admin.update({ nome, cpf, data_nascimento, cargo, email, senha_acesso, status });
-
+      await usuario.update({nome, cpf, data_nascimento, email, telefone, status });
+      await userAdm.update({cargo})
       res.json({ message: "Administrador atualizado com sucesso!" });
     } catch (error) {
       console.error("Erro ao atualizar administrador!", error);
@@ -84,8 +106,8 @@ module.exports = {
       if (!admin) {
         return res.status(404).json({ error: "Administrador não encontrado!" });
       }
-
-      await admin.destroy();
+      const usuario = await Usuarios.findByPk(admin.id_usuario);
+      await usuario.destroy();
       res.json({ message: "Administrador removido com sucesso!" });
     } catch (error) {
       console.error("Erro ao deletar administrador!", error);
