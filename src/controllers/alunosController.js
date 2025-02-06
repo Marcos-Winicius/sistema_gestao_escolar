@@ -165,6 +165,32 @@ cadastro: async(req, res)=>{
     console.error(error)
     return res.render('cadastroEstudante', {error})
   }
+},
+
+portalAluno: async(req, res)=>{
+  try {
+    const { matricula } = req.params;
+    const aluno = await Alunos.findOne({
+      where: {id_usuario: matricula},
+      include: {
+        model: Usuarios,
+        as: "usuario_aluno",
+        attributes: {exclude: ['senha_acesso']}
+      },
+    });
+    if (aluno) {
+      const alunoData = aluno.get({ plain: true });
+      const { usuario_aluno, ...rest } = alunoData;
+      const formattedAluno = {...rest, ...usuario_aluno}
+      console.log(formattedAluno)
+      res.render('portalAluno', {aluno: formattedAluno});
+    } else {
+      res.status(404).json({ error: "Aluno não encontrado!" });
+    }
+  } catch (error) {
+    console.error("Erro ao buscar aluno!", error);
+    res.status(500).json({ error: "Erro ao buscar aluno!" });
+  }
 }
 };
 
