@@ -9,12 +9,12 @@ router.get('/professor', Professor.getAll);
 router.post('/professor/cadastrar', Professor.create);
 
 // Buscar um professor por CPF
-router.get('/professor/:cpf', Professor.getByCpf);
+router.get('/professor/:id', Professor.getById);
 
 // Atualizar um professor
-router.put('/professor/editar/:cpf', Professor.update);
+router.put('/professor/editar/:id', Professor.update);
 
 // Deletar um professor
-router.delete('/professor/excluir/:cpf', Professor.delete);
+router.delete('/professor/excluir/:id', Professor.delete);
 
 module.exports = router;
