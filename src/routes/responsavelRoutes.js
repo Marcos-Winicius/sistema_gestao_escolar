@@ -9,12 +9,12 @@ router.get('/responsavel', Responsavel.getAll);
 router.post('/responsavel/cadastrar', Responsavel.create);
 
 // Buscar um responsável por CPF
-router.get('/responsavel/:cpf', Responsavel.getByCpf);
+router.get('/responsavel/:id', Responsavel.getById);
 
 // Atualizar um responsável
-router.put('/responsavel/editar/:cpf', Responsavel.update);
+router.put('/responsavel/editar/:id', Responsavel.update);
 
 // Deletar um responsável
-router.delete('/responsavel/excluir/:cpf', Responsavel.delete);
+router.delete('/responsavel/excluir/:id', Responsavel.delete);
 
 module.exports = router;
