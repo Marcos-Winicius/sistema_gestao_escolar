@@ -43,12 +43,13 @@ getByMatricula: async (req, res) => {
         model: Usuarios,
         as: "usuario_aluno",
         attributes: {exclude: ['senha_acesso']}
-      },
-      raw: true,
-      nest: false
+      }
     });
     if (aluno) {
-      res.json(aluno);
+      const alunoData = aluno.get({ plain: true });
+      const { usuario_aluno, ...rest } = alunoData;
+      const formattedAluno = {...rest, ...usuario_aluno}
+      res.json(formattedAluno);
     } else {
       res.status(404).json({ error: "Aluno não encontrado!" });
     }
@@ -175,14 +176,14 @@ portalAluno: async(req, res)=>{
       include: {
         model: Usuarios,
         as: "usuario_aluno",
-        attributes: {exclude: ['senha_acesso']}
+        attributes: {exclude: ['senha_acesso', 'login']}
       },
     });
     if (aluno) {
       const alunoData = aluno.get({ plain: true });
       const { usuario_aluno, ...rest } = alunoData;
       const formattedAluno = {...rest, ...usuario_aluno}
-      console.log(formattedAluno)
+      
       res.render('portalAluno', {aluno: formattedAluno});
     } else {
       res.status(404).json({ error: "Aluno não encontrado!" });

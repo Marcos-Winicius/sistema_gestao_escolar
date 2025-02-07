@@ -2,19 +2,31 @@
 function abrirModalCadastroAluno() {
     $('#formAluno')[0].reset(); // Reseta o formulário
     $('#editMode').val('false'); // Define modo de cadastro
+    $("#login").closest(".mb-3").hide();
+    $("#login").attr("required", false);
+    $("#senha").closest(".mb-3").show();
+    $("#senha").attr("required", true);
     $('#modalAlunoLabel').text('Cadastrar Aluno');
     $('#modalAluno').modal('show'); // Abre o modal
 }
 
 // Função para abrir o modal de edição de aluno
 function abrirModalEdicaoAluno(aluno) {
+    console.log(aluno)
     $('#matricula').val(aluno.matricula);
     $('#nome').val(aluno.nome);
     $('#cpf').val(aluno.cpf);
     $('#email').val(aluno.email);
+    $('#telefone').val(aluno.telefone);
+    $("#data_nascimento").val(aluno.data_nascimento.split('T')[0])
     $('#responsavel').val(aluno.responsavel);
+    $("#senha").closest(".mb-3").hide();
+    $("#senha").attr("required", false);
+    $("#login").closest(".mb-3").hide();
+    $("#login").attr("required", false);
     $('#status').val(aluno.status ? '1' : "0");
     $('#editMode').val('true'); // Define modo de edição
+    $('#login')
     $('#modalAlunoLabel').text('Editar Aluno');
     $('#modalAluno').modal('show'); // Abre o modal
 }
@@ -27,19 +39,22 @@ async function salvarAluno() {
         form.reportValidity(); // Valida o formulário nativamente
         return;
     }
-    
+    const cpfFormatado = $("#cpf").val().replace(/[.-]/g, '');
+    const telefoneFormatado = $("#telefone").val().replace(/[\(\)-\s]/g, '');
     const aluno = {
         nome: $('#nome').val(),
-        cpf: $('#cpf').val(),
+        cpf: (cpfFormatado ? cpfFormatado : $('#cpf').val()),
         data_nascimento: $("#data_nascimento").val(),
+        telefone: (telefoneFormatado ? telefoneFormatado : $("#telefone").val()),
         responsavel: $('#responsavel').val(),
         email: $('#email').val(),
-        senha_acesso: $("#senha").val()
     };
     
     const editMode = $('#editMode').val() === 'true';
     if(!editMode){
-        aluno.login = $('#login').val()
+        aluno.login = $('#login').val(),
+        aluno.senha_acesso = $("#senha").val()
+
     }
     const matricula = $('#matricula').val();
     
@@ -80,8 +95,9 @@ async function fetchAlunos() {
                 <tr>
                     <td>${aluno.matricula}</td>
                     <td>${aluno.nome}</td>
-                    <td>${aluno.cpf}</td>
+                    <td>${aluno.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</td>
                     <td>${aluno.email}</td>
+                    <td>${aluno.telefone}</td>
                     <td>${aluno.responsavel}</td>
                     <td><span class="badge ${aluno.status == true ? 'bg-success' : 'bg-danger'}">${aluno.status ? "Ativo" : "Inativo"}</span></td>
                     <td>
@@ -123,7 +139,7 @@ async function excluirAluno(matricula) {
 // Função para editar aluno
 async function editarAluno(matricula) {
     try {
-        const response = await fetch(`/api/alunos/editar/${matricula}`);
+        const response = await fetch(`/api/alunos/${matricula}`);
         if (!response.ok) throw new Error('Erro ao buscar dados do aluno.');
         
         const aluno = await response.json();
@@ -144,4 +160,22 @@ function voltarPagina() {
 // Carrega alunos ao iniciar
 $(document).ready(async () => {
     await fetchAlunos();
+    // Máscara do cpf para ficar com '.' e '-'
+    $('#cpf').mask('000.000.000-00');
+    $('#telefone').mask('(00) 00000-0000');
 });
+
+// RegExp
+// let nome = 'Marcos Winicius 2005';
+// let email = 'Marcoswini990@gmail.com'
+// console.log(nome.search(/winicius/i))
+// /winicius/i = expressão regular que informa winicius sem ter o case sensitive
+// console.log(nome.replace(/[a-f|\d]/ig, ''))
+// Procure O e S sem o case sensitive e sem parar no primeiro resultado
+// i = ignorar o case sensitive
+// g = não para no primeiro resultado / pegar todos os resultados
+// [] = onde irei utilizar os padrões
+// a-z = pegar todos as letras de a até z
+// 0-9 = pegar todos os números de 0 a 9
+// \d = Meta caractere que busca apenas os dígitos de uma expressão
+// \s = Meta caractere que busca espaços
