@@ -2,17 +2,13 @@ const { Usuario: Usuarios} = require('../models/usuariosModel');
 const {v4: uuidv4} = require('uuid');
 
 module.exports = {
-    getAll: async (req, res) => {
+    getAll: async () => {
         try {
             const usuarios = await Usuarios.findAll();
-            if (usuarios.length > 0) {
-                res.json(usuarios);
-            } else {
-                res.status(404).json({ error: "Nenhum administrador encontrado!" });
-            }
+            return usuarios;
         } catch (error) {
             console.error("Erro ao buscar Usuarios!", error);
-            res.status(500).json({ error: "Erro ao buscar Usuarios!" });
+            return {error: "Erro ao buscar Usuários!"};
         }
     },
     
@@ -21,19 +17,19 @@ module.exports = {
             const { id } = req.params;
             const usuario = await Usuarios.findByPk(id);
             if (usuario) {
-                res.json(usuario);
+                return usuario;
             } else {
-                res.status(404).json({ error: "Usuário não encontrado!" });
+                return {error: "Usuário não encontrado!" };
             }
         } catch (error) {
             console.error("Erro ao buscar usuario!", error);
-            res.status(500).json({ error: "Erro ao buscar usuário!" });
+            return { error: "Erro ao buscar usuário!" };
         }
     },
     
-    create: async (req, res) => {
+    create: async (obj) => {
         try {
-            const {nome, cpf, data_nascimento, tipo, login, telefone, email, senha_acesso} = req.body;
+            const {nome, cpf, data_nascimento, tipo, login, telefone, email, senha_acesso} = obj;
             const id = uuidv4();
             const novoUsuario = await Usuarios.create({
                 id,
@@ -47,29 +43,28 @@ module.exports = {
                 tipo
             });
             
-            res.status(201).json(novoUsuario);
+            return novoUsuario;
         } catch (error) {
             console.error("Erro ao criar administrador!", error);
-            res.status(500).json({ error: "Erro ao criar administrador!" });
+            return error
         }
     },
     
-    update: async (req, res) => {
+    update: async (obj) => {
         try {
             const { id } = req.params;
-            const {nome, cpf, data_nascimento, tipo, login, telefone, email, senha_acesso} = req.body;
+            const {nome, cpf, data_nascimento, telefone, email} = req.body;
             
             const usuario = await Usuarios.findByPk(id);
             if (!usuario) {
-                return res.status(404).json({ error: "Usuário não encontrado!" });
+                return {error: 'Usuário não encontrado'};
             }
             
             await usuario.update({nome, cpf, data_nascimento, tipo, login, telefone, email, senha_acesso});
-            
-            res.json({ message: "Usuário atualizado com sucesso!" });
+            return {msg: 'User atualizado com sucesso!'};
         } catch (error) {
             console.error("Erro ao atualizar Usuário!", error);
-            res.status(500).json({ error: "Erro ao atualizar Usuário!" });
+            return {error: 'Erro ao atualizar Usuário'};
         }
     },
     
@@ -78,14 +73,14 @@ module.exports = {
             const { id } = req.params;
             const usuario = await Usuarios.findByPk(id);
             if (!usuario) {
-                return res.status(404).json({ error: "Usuário não encontrado!" });
+                return { error: "Usuário não encontrado!" };
             }
             
             await usuario.destroy();
-            res.json({ message: "Usuário removido com sucesso!" });
+            return {msg: "Usuário removido com sucesso!" };
         } catch (error) {
             console.error("Erro ao deletar Usuário!", error);
-            res.status(500).json({ error: "Erro ao deletar Usuário!" });
+            return { error: "Erro ao deletar Usuário!" };
         }
     }
 };
