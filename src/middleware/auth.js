@@ -1,17 +1,16 @@
 // Middleware para verificar se um token é válido ou não
 const jwt = require('jsonwebtoken');
 
-exports.verifyToken = (req, res, next)=>{
+const verifyToken = (req, res, next)=>{
     const token = req.cookies.auth_token;
-
     if(!token){
         // caso não haja token, redirecionar para página de login
-        return res.redirect('/alunos/login');
+        return res.redirect('/login');
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded)=>{
         if(err){
-            return res.redirect('/alunos/login');
+            return res.redirect('/login');
         }
 
         req.user = {
@@ -24,3 +23,5 @@ exports.verifyToken = (req, res, next)=>{
         next();
     })
 }
+
+module.exports = verifyToken;

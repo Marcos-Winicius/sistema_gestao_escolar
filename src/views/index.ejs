@@ -15,6 +15,17 @@
         .features-section {
             padding: 40px 20px;
         }
+        
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: scale(1.05); /* Aumenta o tamanho em 5% */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Efeito de sombra suave */
+        }
+        
+        
         body{
             height: 100vh;
         }
@@ -32,79 +43,73 @@
 </head>
 <body>
     <!-- Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Gestão Escolar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/home">Início</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
-                        <li class="nav-item"><a class="nav-link btn btn-danger text-white" href="/logout">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <%- include('partials/header') %> 
     
     <!-- Features Section -->
     <main>
+        <!-- Seção de Boas-Vindas -->
+        <header class="bg-primary text-white text-center py-4">
+            <div class="container">
+                <h1>Bem-Vindo(a), <%= user.nome %>!</h1>
+                <p class="lead">Acesse as funcionalidades disponíveis no sistema.</p>
+            </div>
+        </header>
+        
         <section id="features" class="features-section">
             <div class="container">
                 <h2 class="text-center mb-4">Funcionalidades Principais</h2>
                 <div class="row g-4 justify-content-center">
-                    <% if(user.tipo == 'Admin'){%>
-                    <div class="col-md-4 text-center">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Gerenciamento de Alunos</h5>
-                                <p class="card-text">Cadastre e acompanhe informações sobre os alunos em tempo real.</p>
-                                <a href="/gerenciar/alunos" class="stretched-link"></a>
+                    <% if(user.tipo == 'Administrador'){%>
+                        <div class="col-md-4 text-center">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Gerenciamento de Alunos</h5>
+                                    <p class="card-text">Cadastre e acompanhe informações sobre os alunos em tempo real.</p>
+                                    <a href="/gerenciar/alunos" class="stretched-link"></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body row g-1 align-items-center">
-                                <h5 class="card-title">Controle de Disciplinas</h5>
-                                <p class="card-text">Crie, edite e organize disciplinas facilmente.</p>
-                                <a href="/gerenciar/disciplinas" class="stretched-link"></a>
+                        <div class="col-md-4 text-center">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body row g-1 align-items-center">
+                                    <h5 class="card-title">Controle de Disciplinas</h5>
+                                    <p class="card-text">Crie, edite e organize disciplinas facilmente.</p>
+                                    <a href="/gerenciar/disciplinas" class="stretched-link"></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body row g-1 align-items-center">
-                                <h5 class="card-title">Controle de Responsáveis</h5>
-                                <p class="card-text">Crie, edite e organize os responsáveis facilmente.</p>
-                                <a href="/gerenciar/responsavel" class="stretched-link"></a>
+                        <div class="col-md-4 text-center">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body row g-1 align-items-center">
+                                    <h5 class="card-title">Controle de Responsáveis</h5>
+                                    <p class="card-text">Crie, edite e organize os responsáveis facilmente.</p>
+                                    <a href="/gerenciar/responsavel" class="stretched-link"></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <%}%>
-                    <div class="col-md-4 text-center">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body row g-1 align-items-center">
-                                <h5 class="card-title">Portal do aluno</h5>
-                                <p class="card-text">Conferir notas, frequência, trabalhos</p>
-                                <a href="/alunos/portal" class="stretched-link"></a>
+                        <%}%>
+                        <% if(user.tipo == 'Aluno'){%>
+                        <div class="col-md-4 text-center">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body row g-1 align-items-center">
+                                    <h5 class="card-title">Portal do aluno</h5>
+                                    <p class="card-text">Conferir notas, frequência, trabalhos</p>
+                                    <a href="/alunos/portal/<%=user.id%>" class="stretched-link"></a>
+                                </div>
                             </div>
                         </div>
+                        <%}%>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Sistema de Gestão Escolar. Todos os direitos reservados.</p>
+        </footer>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    </html>
     
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Sistema de Gestão Escolar. Todos os direitos reservados.</p>
-    </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
