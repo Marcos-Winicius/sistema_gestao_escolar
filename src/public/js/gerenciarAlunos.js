@@ -97,7 +97,7 @@ async function fetchAlunos() {
                     <td>${aluno.nome}</td>
                     <td>${aluno.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</td>
                     <td>${aluno.email}</td>
-                    <td>${aluno.telefone}</td>
+                    <td>${aluno.telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3")}</td>
                     <td>${aluno.responsavel}</td>
                     <td><span class="badge ${aluno.status == true ? 'bg-success' : 'bg-danger'}">${aluno.status ? "Ativo" : "Inativo"}</span></td>
                     <td>
