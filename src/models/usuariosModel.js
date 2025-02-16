@@ -24,7 +24,8 @@ exports.Usuario = sequelize.define('Usuarios', {
     },
     login: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     telefone: {
         type: DataTypes.STRING(14)

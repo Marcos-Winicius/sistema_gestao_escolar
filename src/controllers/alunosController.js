@@ -1,7 +1,7 @@
 const Alunos = require('../models/alunosModel');
 const {Usuario: Usuarios} = require('../models/usuariosModel');
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const { Op } = require('sequelize');
 const {v4: uuidv4} = require('uuid')
 
 module.exports = {
@@ -65,12 +65,20 @@ create: async (req, res) => {
     // Verificando se o login já existe
     const existingUser = await Usuarios.findOne({
       where: {
-        login
+        [Op.or]: [{ login }, { cpf }, {email}]
       }
     });
     
     if (existingUser) {
-      return res.status(400).json({ error: "Usuário com esse CPF já existe!" });
+      if (existingUser.email === email && existingUser.cpf === cpf) {
+        return res.status(400).json({ mensagem: "Email e CPF já estão em uso!" });
+      } else if (existingUser.email === email) {
+        return res.status(400).json({ mensagem: "Este email já está cadastrado!" });
+      } else if (existingUser.cpf === cpf) {
+        return res.status(400).json({ mensagem: "Este CPF já está cadastrado!" });
+      }else{
+        return res.status(400).json({ mensagem: "Este login já está cadastrado!" });
+      }      
     }
     
     // Hash da senha antes de salvar
