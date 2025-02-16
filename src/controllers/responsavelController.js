@@ -1,5 +1,7 @@
+const { Op } = require('sequelize');
 const Responsaveis = require('../models/responsavelModel');
 const { Usuario: Usuarios } = require('../models/usuariosModel');
+const verificarUsuarioExistente = require('../utils/verificarUsuarioExistente');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -59,7 +61,10 @@ module.exports = {
   create: async (req, res) => {
     try {
       const { nome, cpf, data_nascimento, email, telefone, parentesco, senha_acesso, status } = req.body;
-      
+      const msgErro = await verificarUsuarioExistente(email, cpf)
+      if(msgErro){
+        return res.status(400).json({erro: msgErro})
+      }
       const novoUser = await Usuarios.create({
         nome,
         cpf,
@@ -70,7 +75,7 @@ module.exports = {
         senha_acesso,
         status
       });
-
+      
       const novoResponsavel = await Responsaveis.create({parentesco, id_usuario: novoUser.id});
       res.status(201).json(novoResponsavel);
     } catch (error) {

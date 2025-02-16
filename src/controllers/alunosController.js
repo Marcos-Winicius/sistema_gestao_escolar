@@ -1,8 +1,9 @@
 const Alunos = require('../models/alunosModel');
 const {Usuario: Usuarios} = require('../models/usuariosModel');
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const {v4: uuidv4} = require('uuid')
+const { Op } = require('sequelize');
+const {v4: uuidv4} = require('uuid');
+const verificarUsuarioExistente = require('../utils/verificarUsuarioExistente');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -63,14 +64,9 @@ create: async (req, res) => {
   try {
     const { nome, cpf, data_nascimento, login, telefone, email, senha_acesso, responsavel } = req.body;
     // Verificando se o login já existe
-    const existingUser = await Usuarios.findOne({
-      where: {
-        login
-      }
-    });
-    
-    if (existingUser) {
-      return res.status(400).json({ error: "Usuário com esse CPF já existe!" });
+    const msgErro = await verificarUsuarioExistente(email, cpf)
+    if(msgErro){
+      return res.status(400).json({erro: msgErro})
     }
     
     // Hash da senha antes de salvar

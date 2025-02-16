@@ -1,7 +1,8 @@
 const Administradores = require('../models/adminModel');
 const {Usuario: Usuarios} = require('../models/usuariosModel')
 const {v4: uuidv4} = require('uuid');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const verificarUsuarioExistente = require('../utils/verificarUsuarioExistente');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -58,7 +59,10 @@ module.exports = {
     try {
       const {nome, cpf, data_nascimento, cargo, email, telefone, login, senha_acesso, status } = req.body;
       const hashedPassword = await bcrypt.hash(senha_acesso, 10);
-      
+      const msgErro = await verificarUsuarioExistente(email, cpf)
+      if(msgErro){
+        return res.status(400).json({erro: msgErro})
+      }
       const novoUser = await Usuarios.create({
         id: uuidv4(),
         nome,
