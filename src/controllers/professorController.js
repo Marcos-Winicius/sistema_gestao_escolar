@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const Professores = require('../models/professorModel');
 const {Usuario: Usuarios} = require('../models/usuariosModel');
 const { compare, hash } = require('bcryptjs');
+const verificarUsuarioExistente = require('../utils/verificarUsuarioExistente');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -60,22 +61,11 @@ module.exports = {
   create: async (req, res) => {
     try {
       const { nome, cpf, data_nascimento, email, telefone, formacao_academica, senha_acesso, status } = req.body;
-      
-      const user = await Professores.findOne({
-        where: {login: cpf},
-        include: {
-          model: Usuarios,
-          as: 'usuario_professor',
-          attributes: {
-            exclude: ['senha_acesso']
-          }
-        }
-      })
-      
-      if(user){
-        return res.status(400).json({error: 'O login já registrado no sistema!'})
+      const msgErro = await verificarUsuarioExistente(email, cpf)
+      if(msgErro){
+        return res.status(400).json({erro: msgErro})
       }
-
+      
       // pós verificação de login
       const hashedPassword = hash(senha_acesso, 10)
       const novoUser = await Usuarios.create({

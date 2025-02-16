@@ -2,7 +2,8 @@ const Alunos = require('../models/alunosModel');
 const {Usuario: Usuarios} = require('../models/usuariosModel');
 const bcrypt = require('bcryptjs')
 const { Op } = require('sequelize');
-const {v4: uuidv4} = require('uuid')
+const {v4: uuidv4} = require('uuid');
+const verificarUsuarioExistente = require('../utils/verificarUsuarioExistente');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -63,22 +64,9 @@ create: async (req, res) => {
   try {
     const { nome, cpf, data_nascimento, login, telefone, email, senha_acesso, responsavel } = req.body;
     // Verificando se o login já existe
-    const existingUser = await Usuarios.findOne({
-      where: {
-        [Op.or]: [{ login }, { cpf }, {email}]
-      }
-    });
-    
-    if (existingUser) {
-      if (existingUser.email === email && existingUser.cpf === cpf) {
-        return res.status(400).json({ mensagem: "Email e CPF já estão em uso!" });
-      } else if (existingUser.email === email) {
-        return res.status(400).json({ mensagem: "Este email já está cadastrado!" });
-      } else if (existingUser.cpf === cpf) {
-        return res.status(400).json({ mensagem: "Este CPF já está cadastrado!" });
-      }else{
-        return res.status(400).json({ mensagem: "Este login já está cadastrado!" });
-      }      
+    const msgErro = await verificarUsuarioExistente(email, cpf)
+    if(msgErro){
+      return res.status(400).json({erro: msgErro})
     }
     
     // Hash da senha antes de salvar
