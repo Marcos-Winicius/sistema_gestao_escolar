@@ -4,10 +4,10 @@ const cursosModel = require('./cursosModel')
 
 const Turmas = sequelize.define('Turmas', {
     // Código único do curso
-    // Ano+período letivo . codigo do curso . V, M ou N
-    // 20251.17015.1V
+    // Ano . codigo do curso . V ou M
+    // 2025.17015.V
     codigo: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(12),
         allowNull: false,
         primaryKey: true
     },
