@@ -9,7 +9,8 @@ const disciplinasCurso = require('./routes/disciplinasCursoRouter');
 const alunosRoutes = require('./routes/alunosRoutes');
 const responsavelRoutes = require('./routes/responsavelRoutes');
 const professorRoutes = require('./routes/professorRoutes')
-const adminRoutes = require('./routes/adminRoutes')
+const adminRoutes = require('./routes/adminRoutes');
+const turmasRoutes = require('./routes/turmasRoutes');
 
 // Paginas
 const gerenciarDisciplinas = require('./routes/gerenciarPagesRoutes');
@@ -35,6 +36,7 @@ app.use('/api', alunosRoutes);
 app.use('/api', responsavelRoutes);
 app.use('/api', professorRoutes);
 app.use('/api', adminRoutes);
+app.use('/api', turmasRoutes);
 // Rotas páginas
 app.use('/', publicPage);
 app.use('/', privatePage);
