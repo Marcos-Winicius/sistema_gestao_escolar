@@ -28,7 +28,6 @@ module.exports = {
                 const { curso_turma, ...rest } = turmaData;
                 const formattedTurma = {...rest, ...curso_turma}
                 res.json(formattedTurma);
-                res.status(200).json(turma);
             } else {
                 res.status(404).json({ error: "Turma não encontrada!" });
             }

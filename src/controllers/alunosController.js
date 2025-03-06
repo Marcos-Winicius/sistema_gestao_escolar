@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const { Op } = require('sequelize');
 const {v4: uuidv4} = require('uuid');
 const verificarUsuarioExistente = require('../utils/verificarUsuarioExistente');
+const {formattedData} = require('../utils/formattedData');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -47,9 +48,7 @@ getByMatricula: async (req, res) => {
       }
     });
     if (aluno) {
-      const alunoData = aluno.get({ plain: true });
-      const { usuario_aluno, ...rest } = alunoData;
-      const formattedAluno = {...rest, ...usuario_aluno}
+      const formattedAluno = formattedData(aluno);
       res.json(formattedAluno);
     } else {
       res.status(404).json({ error: "Aluno não encontrado!" });
