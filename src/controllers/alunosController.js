@@ -11,7 +11,7 @@ module.exports = {
     try {
       const alunos = await Alunos.findAll({
         include: {
-          model: Usuarios,
+          model: UsAuarios,
           as: "usuario_aluno",
           attributes: {exclude: ['senha_acesso', 'login']}
         },
@@ -19,15 +19,7 @@ module.exports = {
     );
     
     // Processa os dados para remover o aninhamento
-    const formattedAlunos = alunos.map(aluno => {
-      // Converte para objeto simples e extrai a associação
-      const alunoData = aluno.get({ plain: true });
-      const { usuario_aluno, ...rest } = alunoData;
-      return {
-        ...rest,
-        ...usuario_aluno // Mescla os campos do usuário
-      };
-    });
+    const formattedAlunos = alunos.map(aluno => formattedData(aluno));
     res.json(formattedAlunos);
     
   } catch (error) {
