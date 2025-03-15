@@ -3,7 +3,7 @@ const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 const {Usuario: Usuarios} = require('./usuariosModel')
 
-const Professor = sequelize.define('professores', {
+const Professor = sequelize.define('Professores', {
     id_usuario: {
         type: DataTypes.STRING(40),
         primaryKey: true,

@@ -24,7 +24,7 @@ Disciplinas.init({
 },
 {
     sequelize,
-    modelName: 'disciplinas',
+    modelName: 'Disciplinas',
     timestamps: false
 })
 
